@@ -3,10 +3,11 @@ import thunkMiddleware from 'redux-thunk';
 
 import reducer from './index.reducer';
 
-export default () =>
+export const makeStore = (initialState = {}) =>
   createStore(
     reducer,
     {
+      ...initialState,
       sources: [],
       posts: []
     },

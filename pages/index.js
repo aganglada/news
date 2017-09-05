@@ -1,12 +1,16 @@
 import React, { PureComponent } from 'react';
 import withRedux from 'next-redux-wrapper';
 
-import store from './index.store';
+import { makeStore } from './index.store';
 import { fetchSources } from './index.actions';
 
 class News extends PureComponent {
-  static async getInitialProps({ store }) {
+  static async getInitialProps({ store, isServer }) {
     await store.dispatch(fetchSources());
+
+    return {
+      isServer
+    };
   }
 
   render() {
@@ -14,14 +18,14 @@ class News extends PureComponent {
   }
 }
 
-const maptDispatchToProps = dispatch => {
-  return {};
-};
-
 const mapStateToProps = state => {
   return {
     sources: state.sources
   };
 };
 
-export default withRedux(store, mapStateToProps, maptDispatchToProps)(News);
+const maptDispatchToProps = dispatch => {
+  return {};
+};
+
+export default withRedux(makeStore, mapStateToProps, maptDispatchToProps)(News);
